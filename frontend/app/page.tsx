@@ -27,13 +27,6 @@ export default function Chat() {
                     <div className="text-sm">{part.text}</div>
                   </div>
                 );
-              case "tool-weather":
-              case "tool-convertFahrenheitToCelsius":
-                return (
-                  <pre key={`${message.id}-${i}`}>
-                    {JSON.stringify(part, null, 2)}
-                  </pre>
-                );
             }
           })}
         </div>

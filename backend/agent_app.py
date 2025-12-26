@@ -76,13 +76,13 @@ async def query_func(
         #     generate_kwargs={"extra_body": {"enable_thinking": False}},
         # ),
         model=OpenAIChatModel(
-            model_name="glm-4.6",
+            model_name="glm-4.7",
             api_key=os.getenv("GLM_API_KEY"),
             stream=True,
             client_args={
                 "base_url": "https://open.bigmodel.cn/api/coding/paas/v4",
             },
-            generate_kwargs={"extra_body": {"thinking": {"type": "disabled"}}},
+            # generate_kwargs={"extra_body": {"thinking": {"type": "disabled"}}},
         ),
         sys_prompt="You're a helpful assistant named Friday.",
         # toolkit=toolkit,

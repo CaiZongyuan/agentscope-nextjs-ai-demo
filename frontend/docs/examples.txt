@@ -1,0 +1,38 @@
+event: response.created
+data: {"response": {"id": "response_3f32a29a-6791-45dc-a113-ab99c496cb62", "created_at": 1766673227.0, "model": "", "object": "response", "output": [], "parallel_tool_calls": false, "tool_choice": "auto", "tools": [], "status": "queued"}, "sequence_number": 0, "type": "response.created"}
+
+event: response.in_progress
+data: {"response": {"id": "response_3f32a29a-6791-45dc-a113-ab99c496cb62", "created_at": 1766673227.0, "model": "", "object": "response", "output": [], "parallel_tool_calls": false, "tool_choice": "auto", "tools": [], "status": "in_progress"}, "sequence_number": 1, "type": "response.in_progress"}
+
+event: response.output_item.added
+data: {"item": {"id": "msg_72bd517f-f9bb-40b5-b1fb-f4fe9d3e731b", "summary": [], "type": "reasoning"}, "output_index": 0, "sequence_number": 2, "type": "response.output_item.added"}
+
+event: response.reasoning_text.delta
+data: {"content_index": 0, "delta": "1", "item_id": "msg_72bd517f-f9bb-40b5-b1fb-f4fe9d3e731b", "output_index": 0, "sequence_number": 3, "type": "response.reasoning_text.delta"}
+
+省略更多 response.reasoning_text.delta ......
+
+
+event: response.output_item.added
+data: {"item": {"id": "msg_9338d129-0041-4a08-8286-0c347d8eeb18", "content": [], "role": "assistant", "status": "in_progress", "type": "message"}, "output_index": 1, "sequence_number": 354, "type": "response.output_item.added"}
+
+event: response.content_part.added
+data: {"content_index": 0, "item_id": "msg_9338d129-0041-4a08-8286-0c347d8eeb18", "output_index": 1, "part": {"annotations": [], "text": "", "type": "output_text"}, "sequence_number": 355, "type": "response.content_part.added"}
+
+event: response.output_text.delta
+data: {"content_index": 0, "delta": "Under", "item_id": "msg_9338d129-0041-4a08-8286-0c347d8eeb18", "logprobs": [], "output_index": 1, "sequence_number": 356, "type": "response.output_text.delta"}
+
+省略更多 response.output_text.delta ......
+
+
+event: response.output_item.done
+data: {"item": {"id": "msg_72bd517f-f9bb-40b5-b1fb-f4fe9d3e731b", "summary": [], "type": "reasoning", "content": [{"text": "1.  **Analyze the user's input**: The user said, \"You're a helpful assistant named Friday.\"\n\n2.  **Identify the intent**: This is a prompt establishing my persona. The user is assigning me a name (\"Friday\") and a role (\"helpful assistant\").\n\n3.  **Determine the appropriate response**:\n    *   Acknowledge the name.\n    *   Confirm the role.\n    *   Adopt a tone consistent with a helpful assistant (friendly, ready to assist).\n    *   Perhaps make a slight nod to the name \"Friday\" (like \"Thank God it's Friday\" or references to the Robinson Crusoe/Spider-Man assistant) if appropriate, but usually, a simple, professional acknowledgment is best unless the user asks for something quirky.\n\n4.  **Drafting the response**:\n    *   *Option 1 (Simple)*: \"Understood. I am ready to help. What would you like to do?\"\n    *   *Option 2 (Persona-focused)*: \"Hello! I'm Friday. I'm here to help you with whatever you need. How can I assist you today?\"\n    *   *Option 3 (Enthusiastic)*: \"Got it! I'm Friday, your helpful assistant. What can I do for you?\"\n\n5.  **Refining the response**: Option 2 is the most natural and welcoming. It confirms the specific instruction given.\n\n6.  **Final Polish**: \"Understood. I'm Friday, and I'm here to help. How can I assist you today?\"\n\n7.  **Safety Check**: Does this violate any policies? No. It's a persona adoption.\n\n8.  **Output Generation**.", "type": "reasoning_text"}]}, "output_index": 2, "sequence_number": 374, "type": "response.output_item.done"}
+
+event: response.output_item.done
+data: {"item": {"id": "msg_9338d129-0041-4a08-8286-0c347d8eeb18", "content": [{"annotations": [], "text": "Understood. I am Friday, your helpful assistant. How can I assist you today?", "type": "output_text"}, {"annotations": [], "text": "", "type": "output_text"}], "role": "assistant", "status": "completed", "type": "message"}, "output_index": 1, "sequence_number": 375, "type": "response.output_item.done"}
+
+event: response.completed
+data: {"response": {"id": "response_3f32a29a-6791-45dc-a113-ab99c496cb62", "created_at": 1766673227.0, "model": "", "object": "response", "output": [{"id": "msg_72bd517f-f9bb-40b5-b1fb-f4fe9d3e731b", "summary": [], "type": "reasoning", "content": [{"text": "1.  **Analyze the user's input**: The user said, \"You're a helpful assistant named Friday.\"\n\n2.  **Identify the intent**: This is a prompt establishing my persona. The user is assigning me a name (\"Friday\") and a role (\"helpful assistant\").\n\n3.  **Determine the appropriate response**:\n    *   Acknowledge the name.\n    *   Confirm the role.\n    *   Adopt a tone consistent with a helpful assistant (friendly, ready to assist).\n    *   Perhaps make a slight nod to the name \"Friday\" (like \"Thank God it's Friday\" or references to the Robinson Crusoe/Spider-Man assistant) if appropriate, but usually, a simple, professional acknowledgment is best unless the user asks for something quirky.\n\n4.  **Drafting the response**:\n    *   *Option 1 (Simple)*: \"Understood. I am ready to help. What would you like to do?\"\n    *   *Option 2 (Persona-focused)*: \"Hello! I'm Friday. I'm here to help you with whatever you need. How can I assist you today?\"\n    *   *Option 3 (Enthusiastic)*: \"Got it! I'm Friday, your helpful assistant. What can I do for you?\"\n\n5.  **Refining the response**: Option 2 is the most natural and welcoming. It confirms the specific instruction given.\n\n6.  **Final Polish**: \"Understood. I'm Friday, and I'm here to help. How can I assist you today?\"\n\n7.  **Safety Check**: Does this violate any policies? No. It's a persona adoption.\n\n8.  **Output Generation**.", "type": "reasoning_text"}]}, {"id": "msg_9338d129-0041-4a08-8286-0c347d8eeb18", "content": [{"annotations": [], "text": "Understood. I am Friday, your helpful assistant. How can I assist you today?", "type": "output_text"}, {"annotations": [], "text": "", "type": "output_text"}], "role": "assistant", "status": "completed", "type": "message"}], "parallel_tool_calls": false, "tool_choice": "auto", "tools": [], "status": "completed"}, "sequence_number": 376, "type": "response.completed"}
+
+
+

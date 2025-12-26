@@ -1,0 +1,59 @@
+✓ Starting...
+✓ Ready in 799ms
+ GET / 200 in 797ms (compile: 567ms, render: 230ms)
+{ type: 'start' }
+{
+  type: 'start-step',
+  warnings: []
+}
+{
+  type: 'reasoning-start',
+  id: 'msg_1d49f397-622d-46db-8e39-cce1c419f462:0',
+  providerMetadata: {
+    openai: {
+      itemId: 'msg_1d49f397-622d-46db-8e39-cce1c419f462',
+      reasoningEncryptedContent: null
+    }
+  }
+}
+{
+  type: 'text-start',
+  id: 'msg_91f44237-62f6-4555-bc0d-b4d85feb5515',
+  providerMetadata: { openai: { itemId: 'msg_91f44237-62f6-4555-bc0d-b4d85feb5515' } }
+}
+{
+  type: 'text-delta',
+  id: 'msg_91f44237-62f6-4555-bc0d-b4d85feb5515',
+  text: 'Hello',
+  providerMetadata: undefined
+}
+省略更多 text-delta
+{
+  type: 'reasoning-end',
+  id: 'msg_1d49f397-622d-46db-8e39-cce1c419f462:0',
+  providerMetadata: {
+    openai: {
+      itemId: 'msg_1d49f397-622d-46db-8e39-cce1c419f462',
+      reasoningEncryptedContent: null
+    }
+  }
+}
+{
+  type: 'text-end',
+  id: 'msg_91f44237-62f6-4555-bc0d-b4d85feb5515',
+  providerMetadata: { openai: { itemId: 'msg_91f44237-62f6-4555-bc0d-b4d85feb5515' } }
+}
+{
+  type: 'finish-step',
+  finishReason: 'other',
+  rawFinishReason: undefined,
+  providerMetadata: {
+    openai: { responseId: 'response_83f88d11-9191-459a-b421-e5ccf28191d0' }
+  },
+}
+{
+  type: 'finish',
+  finishReason: 'other',
+  rawFinishReason: undefined,
+}
+ POST /api/chat 200 in 8.4s (compile: 147ms, render: 8.3s)

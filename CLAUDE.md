@@ -85,6 +85,13 @@ SILICONFLOW_API_KEY=your_siliconflow_api_key
 
 ## Development Notes
 
+### Vercel AI SDK v6 Documentation
+**IMPORTANT**: Claude has limited familiarity with Vercel AI SDK v6. When working with AI SDK features, always reference the official documentation in:
+- `frontend/docs/AI-SDK-Core/` - Core SDK documentation (text generation, structured data, providers, middleware, etc.)
+- `frontend/docs/AI-SDK-UI/` - UI hooks and components documentation (useChat, streaming, message protocols, etc.)
+
+Before implementing AI SDK features, read the relevant documentation files to ensure correct usage of the latest v6 APIs and patterns.
+
 ### Frontend Development
 - Uses App Router (pages directory not supported)
 - Tailwind CSS v4 with PostCSS configuration
