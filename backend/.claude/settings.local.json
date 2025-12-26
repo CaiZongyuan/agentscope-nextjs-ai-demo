@@ -5,7 +5,8 @@
       "Bash(find:*)",
       "Skill(agentscope-runtime)",
       "Bash(dir:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []
