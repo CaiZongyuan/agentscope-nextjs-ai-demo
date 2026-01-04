@@ -20,10 +20,10 @@ export async function POST(req: Request) {
     model: agentScopeRuntime("agent-model"),
     // model: glm.chatModel("glm-4.7"),
     messages: await convertToModelMessages(messages),
-    onChunk: ({ chunk }) => {
-      // 使用 onChunk 回调进行调试，不会消费流
-      console.log("Chunk:", chunk);
-    },
+    // 使用 onChunk 回调进行调试，不会消费流
+    // onChunk: ({ chunk }) => {
+    //   console.log("Chunk:", chunk);
+    // },
   });
 
   return result.toUIMessageStreamResponse({});

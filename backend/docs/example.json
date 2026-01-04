@@ -1,0 +1,58 @@
+{
+    "messages": [
+        {
+            "role": "system",
+            "name": "system",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "You're a helpful assistant named Friday."
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "name": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "你好"
+                }
+            ]
+        }
+    ],
+    "model": "glm-4.7",
+    "stream": true,
+    "stream_options": {
+        "include_usage": true
+    },
+    "tools": [
+        {
+            "type": "function",
+            "function": {
+                "name": "execute_python_code",
+                "parameters": {
+                    "properties": {
+                        "code": {
+                            "description": "The Python code to be executed.",
+                            "type": "string"
+                        },
+                        "timeout": {
+                            "default": 300,
+                            "description": "The maximum time (in seconds) allowed for the code to run.",
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "code"
+                    ],
+                    "type": "object"
+                },
+                "description": "Execute the given python code in a temp file and capture the return\ncode, standard output and error. Note you must `print` the output to get\nthe result, and the tmp file will be removed right after the execution."
+            }
+        }
+    ],
+    "thinking": {
+        "type": "disabled"
+    }
+}
