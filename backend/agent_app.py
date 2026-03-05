@@ -1,44 +1,53 @@
 # -*- coding: utf-8 -*-
+import asyncio
 import os
+from contextlib import asynccontextmanager
 
 from agentscope.agent import ReActAgent
 from agentscope.formatter import OpenAIChatFormatter
 from agentscope.mcp import HttpStatelessClient
+from agentscope.memory import InMemoryMemory
 from agentscope.model import OpenAIChatModel
 from agentscope.pipeline import stream_printing_messages
+from agentscope.session import RedisSession
 from agentscope.tool import Toolkit, view_text_file
-from agentscope_runtime.adapters.agentscope.memory import AgentScopeSessionHistoryMemory
-from agentscope_runtime.engine.app import AgentApp
+from agentscope_runtime.engine import AgentApp
 from agentscope_runtime.engine.schemas.agent_schemas import AgentRequest
-from agentscope_runtime.engine.services.agent_state import InMemoryStateService
-from agentscope_runtime.engine.services.session_history import (
-    InMemorySessionHistoryService,
-)
 from dotenv import load_dotenv
+from fastapi import FastAPI
 
 load_dotenv()
 
+
+# 1. Define lifecycle
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    import fakeredis
+
+    fake_redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
+    # Note: This FakeRedis instance is only for development/testing.
+    # In production, replace it with your own Redis client/connection
+    # (for example, aioredis.Redis).
+    app.state.session = RedisSession(connection_pool=fake_redis.connection_pool)
+    try:
+        yield
+    finally:
+        print("AgentApp is shutting down...")
+
+
+# 2. Create AgentApp
 app = AgentApp(
     app_name="Jarvis",
     app_description="A helpful assistant",
+    lifespan=lifespan,
+    # Note: Since 'interrupt_redis_url' and 'interrupt_backend'
+    # are not provided, the local interrupt backend is used currently.
+    # To support distributed interruption, you can add the following config:
+    # interrupt_redis_url="redis://localhost",
 )
 
 
-@app.init
-async def init_func(self):
-    self.state_service = InMemoryStateService()
-    self.session_service = InMemorySessionHistoryService()
-
-    await self.state_service.start()
-    await self.session_service.start()
-
-
-@app.shutdown
-async def shutdown_func(self):
-    await self.state_service.stop()
-    await self.session_service.stop()
-
-
+# 3. Define request handling logic
 @app.query(framework="agentscope")
 async def query_func(
     self,
@@ -46,19 +55,13 @@ async def query_func(
     request: AgentRequest = None,
     **kwargs,
 ):
-    assert kwargs is not None, "kwargs is Required for query_func"
     session_id = request.session_id
     user_id = request.user_id
-
-    state = await self.state_service.export_state(
-        session_id=session_id,
-        user_id=user_id,
-    )
 
     toolkit = Toolkit()
     toolkit.register_tool_function(view_text_file)
     linear_mcp = HttpStatelessClient(
-        # 用于标识 MCP 的名称
+        # Name used to identify this MCP
         name="linear_mcp",
         transport="streamable_http",
         url="https://mcp.linear.app/mcp",
@@ -69,8 +72,6 @@ async def query_func(
     await toolkit.register_mcp_client(
         linear_mcp,
     )
-
-    # toolkit.register_agent_skill("agent/skills/daily-reflection")
 
     agent = ReActAgent(
         name="Jarvis",
@@ -174,36 +175,61 @@ While conversing, actively tag information:
 **AI:** I hear you. Meetings can be draining. Did you have any leftover tasks from today that need to be moved to tomorrow? *(Direct/Efficient)*
 **User:** No. Just remind me to email Bob at 9 AM.
 **AI:** Got it. "Email Bob at 9 AM" is added. Go get some rest! *(Closing)*
-        
+
         """,
         toolkit=toolkit,
-        memory=AgentScopeSessionHistoryMemory(
-            service=self.session_service,
-            session_id=session_id,
-            user_id=user_id,
-        ),
+        memory=InMemoryMemory(),
         formatter=OpenAIChatFormatter(),
     )
 
-    if state:
-        agent.load_state_dict(state)
+    agent.set_console_output_enabled(enabled=True)
 
-    async for msg, last in stream_printing_messages(
-        agents=[agent],
-        coroutine_task=agent(msgs),
-    ):
-        yield msg, last
-
-    state = agent.state_dict()
-
-    await self.state_service.save_state(
-        user_id=user_id,
+    # Load agent state
+    await app.state.session.load_session_state(
         session_id=session_id,
-        state=state,
+        user_id=user_id,
+        agent=agent,
     )
 
+    try:
+        async for msg, last in stream_printing_messages(
+            agents=[agent],
+            coroutine_task=agent(msgs),
+        ):
+            yield msg, last
 
-# 2. Create multiple endpoints for AgentApp
+    except asyncio.CancelledError:
+        # Interruption handling logic
+        print(f"Task {session_id} was manually interrupted.")
+
+        # Manually interrupt the agent here to fully stop the underlying run
+        await agent.interrupt()
+
+        # Re-raise the exception so the system marks the task as STOPPED
+        raise
+
+    finally:
+        # Persist agent state
+        await app.state.session.save_session_state(
+            session_id=session_id,
+            user_id=user_id,
+            agent=agent,
+        )
+
+
+# 4. Create an AgentApp with multiple endpoints
+@app.post("/stop")
+async def stop_task(request: AgentRequest):  # Route that triggers interruption
+    await app.stop_chat(
+        user_id=request.user_id,
+        session_id=request.session_id,
+    )
+    return {
+        "status": "success",
+        "message": "Interrupt signal broadcasted.",
+    }
+
+
 @app.endpoint("/sync")
 def sync_handler(request: AgentRequest):
     return {"status": "ok", "payload": request}
@@ -242,4 +268,4 @@ async def atask_handler(request: AgentRequest):
     return {"status": "ok", "payload": request}
 
 
-print("✅ AgentApp configuration completed")
+print("✅ All done!")

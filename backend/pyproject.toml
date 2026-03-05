@@ -4,6 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["agentscope-runtime", "agentscope"]
+dependencies = [
+    "agentscope-runtime",
+    "agentscope",
+    "fakeredis>=2.34.1",
+]
 [tool.ruff]
 extend-select = ["I"]
